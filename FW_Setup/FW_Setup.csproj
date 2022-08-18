@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>fwsetup</AssemblyName>
+    <RootNamespace>BF_FW</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Compress_WinRAR.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GSF.COMTRADE" Version="2.4.28" />
+    <PackageReference Include="GSF.Core" Version="2.4.28" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FFTWSharp-master\FFTWSharp\FFTWSharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="fftwlib">
+      <HintPath>..\FFTWSharp-master\FFTWSharp\bin\Debug\fftwlib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
