@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GSF.COMTRADE;
 
 namespace PRSplineWPF.Model
 {
@@ -12,6 +13,16 @@ namespace PRSplineWPF.Model
         {
 
         }
+        public struct RalayPRData
+        {
+            public  Parser Parsers;
+            public List<double[]> PrimaryData;
+            public List<double[]> SecondaryData;
+            public List<double[]> PerUnitData;
+            public string[] AnalogNames;
+            public string[] DigitalNames;
+        }
+        public List<RalayPRData> datas { set; get; }
         private string _Location = "Location：";
         private string _Device = "Device：";
         private string _StartData = "開始日期：";
