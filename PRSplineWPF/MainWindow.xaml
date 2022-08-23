@@ -11,7 +11,20 @@
         Title="MainWindow" Height="900" Width="1600" WindowStartupLocation="CenterScreen" FontSize="20" MinWidth="1600" MinHeight="900" >
     <Window.DataContext>
         <ViewModel:MainWindowViewModel/>
+        
     </Window.DataContext>
+    <Window.Resources>
+        <ControlTemplate x:Key="roundbutton" TargetType="Button">
+            <Grid Height="30" >
+                <Rectangle   RadiusX="5"   RadiusY="5"  Fill="{TemplateBinding Background}"  
+                     Width="{TemplateBinding Width}"
+                     Height="{TemplateBinding Height}" />
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
     <Grid x:Name="grid" Background="Gray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  >
         <Behaviors:Interaction.Triggers>
             <Behaviors:EventTrigger  EventName="SizeChanged" SourceObject="{Binding ElementName=grid, Mode=OneWay}">
@@ -177,7 +190,10 @@
                                 </Grid.RowDefinitions>
                                 <Label VerticalAlignment="Center" Grid.Row="0" Content="Analog Channels" FontSize="14" Foreground="#FFF9F9F9"/>
                                 <Border  Grid.Row="1" BorderBrush="#FF3EE1F1" BorderThickness="2" >
-                                    <Grid  >
+                                    <Grid  Name="AnalogGrid" >
+                                        <Button  Template="{StaticResource roundbutton}"   VerticalAlignment="Top" >qwe</Button>
+                                        <Button Template="{StaticResource roundbutton}" VerticalAlignment="Top" > qwe </Button>
+                                        <ScrollBar HorizontalAlignment="Left"  Margin="0" VerticalAlignment="Top"/>
                                         <!--UserControls:ButtonBlock HorizontalAlignment="Left" VerticalAlignment="Top" ButtonName="{Binding AnalogBlockName}"/-->
                                     </Grid>
 

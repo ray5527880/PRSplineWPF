@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PRSplineWPF.Model;
 
 
 namespace PRSplineWPF.Scripts
@@ -14,7 +15,7 @@ namespace PRSplineWPF.Scripts
     public class OpenFiles
     {
         public int[] FFTIndex;
-        public void OpenFile(string FilePaht, string FileName)
+        public void OpenFile(string FilePaht, string FileName,ref RalayPRData Raleydata)
         {
             //var _MainWindowData = new MainWindowData();
 
@@ -22,7 +23,7 @@ namespace PRSplineWPF.Scripts
             string strRarPath = string.Empty;
             string strFileName = FileName;
             string strXmlFile = this.GetType().Assembly.Location;
-            string strfilePath = strXmlFile = strXmlFile.Replace("PRView.dll", "CompressFile\\");
+            string strfilePath = strXmlFile = strXmlFile.Replace("PRSplineWPF.exe", "CompressFile\\");
             if (strFile.IndexOf(".cfg") > 0 || strFile.IndexOf(".CFG") > 0)
             {
                 if (File.Exists(strFile.Replace(".cfg", ".dat")) || File.Exists(strFile.Replace(".CFG", ".DAT")))
@@ -56,10 +57,10 @@ namespace PRSplineWPF.Scripts
                     LoadDataFile.GetCFGData(item, ref Parsers);
                     break;
                 }
-                //_MainWindowData.PrimaryData = new List<double[]>();
-                //_MainWindowData.SecondaryData = new List<double[]>();
-               // _MainWindowData.PerUnitData = new List<double[]>();
-               // LoadDataFile.GetDatData(Parsers, ref _MainWindowData.PrimaryData, ref _MainWindowData.SecondaryData, ref _MainWindowData.PerUnitData);
+                Raleydata.PrimaryData = new List<double[]>();
+                Raleydata.SecondaryData = new List<double[]>();
+                Raleydata.PerUnitData = new List<double[]>();
+               LoadDataFile.GetDatData(Parsers, ref Raleydata.PrimaryData, ref Raleydata.SecondaryData, ref Raleydata.PerUnitData);
 
                 List<int> _fftIndex = new List<int>();
                 for (int i = 0; i < Parsers.Schema.TotalAnalogChannels; i++)
@@ -82,13 +83,14 @@ namespace PRSplineWPF.Scripts
                 {
                     _analogData.Add(Parsers.Schema.AnalogChannels[i].Name + "_FFT");
                 }
-                //_MainWindowData.AnalogNames = _analogData.ToArray();
-                //_MainWindowData.DigitalNames = _DigitalData.ToArray();
+                Raleydata.AnalogNames = _analogData.ToArray();
+                Raleydata.DigitalNames = _DigitalData.ToArray();
             }
             catch (ApplicationException message)
             {
                 throw;
             }
+            Raleydata.Parsers= Parsers;
           //  return _MainWindowData;
         }
     }
