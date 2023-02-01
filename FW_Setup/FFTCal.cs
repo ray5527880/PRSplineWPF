@@ -4,8 +4,9 @@ using System.Text;
 using GSF.COMTRADE;
 using System.IO;
 using BF_FW.data;
-using FFTWSharp;
-using System.Numerics;
+//using FFTWSharp;
+//using System.Numerics;
+using FftSharp ;
 
 
 namespace BF_FW
@@ -26,7 +27,7 @@ namespace BF_FW
             FFTData mFFTData = new FFTData();
             try
             {
-                var fftdata = new List<FFTData.fftData>();
+                var fftdata = new List<FFTData.fftData>();                
                 for (int i = 0; i < mParser.Schema.SampleRates[0].EndSample; i++)
                 {
                     FFTData.fftData _data = new FFTData.fftData();
@@ -52,7 +53,10 @@ namespace BF_FW
                 }
                 mFFTData.arrFFTData = fftdata.ToArray();
             }
-            catch (Exception ex) { throw; }
+            catch (Exception ex)
+            { 
+                throw; 
+            }
             return mFFTData;
         }
 
@@ -74,17 +78,19 @@ namespace BF_FW
                     cdata[i] = new Complex(datData[i + index_Entry - SIZE / 2][fftIndex[index_Value] + 2], 0);
                 }
             }
-            fftw_complexarray input = new fftw_complexarray(SIZE);
-            fftw_complexarray ReData = new fftw_complexarray(SIZE);
+            FftSharp.Transform.FFT(cdata);
+            return cdata[1];
+            //fftw_complexarray input = new fftw_complexarray(SIZE);
+            //fftw_complexarray ReData = new fftw_complexarray(SIZE);
 
-            input.SetData(cdata);
+            //input.SetData(cdata);
 
-            fftw_plan pf = fftw_plan.dft_1d(SIZE, input, ReData, fftw_direction.Forward, fftw_flags.Estimate);
+            //fftw_plan pf = fftw_plan.dft_1d(SIZE, input, ReData, fftw_direction.Forward, fftw_flags.Estimate);
 
-            pf.Execute();
+            //pf.Execute();
 
-            var data_Complex = ReData.GetData_Complex();
-            return data_Complex[1];
+            //var data_Complex = ReData.GetData_Complex();
+            //return data_Complex[1];
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 using GSF.COMTRADE;
 using System.IO;
 using BF_FW.data;
-using FFTWSharp;
+//using FFTWSharp;
 using System.Numerics;
 
 namespace BF_FW

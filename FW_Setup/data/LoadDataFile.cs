@@ -17,8 +17,9 @@ namespace BF_FW.data
             parser = new Parser();
             try
             {
+               // var x = new Schema("C: /Users/USER/Desktop/File/AQ/AQ/PRSplineWPF/PRSplineWPF/PRSplineWPF/bin/Debug/CompressFile/21127002.CFG");
                 parser.Schema = new Schema(filePath);
-
+                
                 parser.InferTimeFromSampleRates = true;
                 parser.OpenFiles();
             }
@@ -69,8 +70,9 @@ namespace BF_FW.data
                 for (int i = 0; i < parser.Schema.TotalDigitalChannels; i++)
                 {
                     PUData[i + 2 + parser.Schema.TotalAnalogChannels] = parser.Values[parser.Schema.TotalAnalogChannels + i];
+                    PData[i + 2 + parser.Schema.TotalAnalogChannels] = PUData[i + 2 + parser.Schema.TotalAnalogChannels];
+                    SData[i + 2 + parser.Schema.TotalAnalogChannels] = PUData[i + 2 + parser.Schema.TotalAnalogChannels];
                 }
-
                 PrimaryData.Add(PData);
                 SecondaryData.Add(SData);
                 PerUnitData.Add(PUData);

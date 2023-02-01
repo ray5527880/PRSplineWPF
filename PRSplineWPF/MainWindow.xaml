@@ -4,14 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PRSplineWPF"
+        xmlns:locals="clr-namespace:PRSplineWPF.UserControls"
         xmlns:ViewModel="clr-namespace:PRSplineWPF.ViewModel"
         xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        
         mc:Ignorable="d"
         
         Title="MainWindow" Height="900" Width="1600" WindowStartupLocation="CenterScreen" FontSize="20" MinWidth="1600" MinHeight="900" >
     <Window.DataContext>
         <ViewModel:MainWindowViewModel/>
-        
+
     </Window.DataContext>
     <Window.Resources>
         <ControlTemplate x:Key="roundbutton" TargetType="Button">
@@ -26,6 +28,10 @@
         </ControlTemplate>
     </Window.Resources>
     <Grid x:Name="grid" Background="Gray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="182*"/>
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
         <Behaviors:Interaction.Triggers>
             <Behaviors:EventTrigger  EventName="SizeChanged" SourceObject="{Binding ElementName=grid, Mode=OneWay}">
                 <Behaviors:SetDataStoreValueAction PropertyName="MainViewWidth"
@@ -42,7 +48,7 @@
             <RowDefinition Height="9*" />
 
         </Grid.RowDefinitions>
-        <Border>
+        <Border Grid.ColumnSpan="2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2.5*" />
@@ -71,13 +77,13 @@
                                     <RowDefinition Height="50"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Button Width="44"  Height="44" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" Background="Transparent" Command="{Binding btn_OpenFile, Mode=OneWay}">
+                                <Button Width="44"  Height="44" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" Background="Transparent"  Click="onFileOpen"    >
                                     <Image Source="Icon\openfile.png"/>
                                 </Button>
-                                <Button Width="44" Height="44" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1" Background="Transparent" Command="{Binding btn_DowloadFile,Mode=OneWay}">
+                                <Button Width="44" Height="44" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1" Background="Transparent" Click="OpenDownloadWindows"      Command="{Binding btn_DowloadFile,Mode=OneWay}">
                                     <Image Source="Icon\download1.png"/>
                                 </Button>
-                                <Button Width="44" Height="44" HorizontalAlignment="Center" Grid.Column="3" Grid.Row="1" Background="Transparent" Command="{Binding btn_Setup,Mode=OneWay}">
+                                <Button Width="44" Height="44" HorizontalAlignment="Center" Grid.Column="3" Grid.Row="1" Background="Transparent" Click="OpenSetupWindows" >
                                     <Image Source="Icon\setup_SP.png"/>
                                 </Button>
                                 <Button Width="44" Height="44" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="1" Background="Transparent" Command="{Binding btn_VS,Mode=OneWay}">
@@ -130,7 +136,7 @@
                                     <Image Source="Icon\Ex.png"/>
                                 </Button>
                                 <Label Grid.Row="1" Grid.Column="9" HorizontalAlignment="Center" VerticalAlignment="Center" Content="一次/二次/標么" />
-                                <ComboBox Grid.Row="1" Grid.Column="10" Width="75"  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <ComboBox Name="PSCbx" Grid.Row="1" Grid.Column="10" Width="75"  HorizontalAlignment="Center" VerticalAlignment="Center" SelectionChanged="PSCbx_SelectionChanged"  >
                                     <ComboBoxItem Content="一次"/>
                                     <ComboBoxItem Content="二次"/>
                                     <ComboBoxItem Content="標么"/>
@@ -151,17 +157,17 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Label Content="{Binding models.Locastion}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                        <Label Content="{Binding models.Device}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-                        <Label Content="{Binding models.StartData}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"/>
-                        <Label Content="{Binding models.TriggerData}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
-                        <Label Content="{Binding models.StartTime}" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"/>
-                        <Label Content="{Binding models.TriggerTime}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center"/>
+                        <Label Name="tLocation"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                        <Label Name="tDevice" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                        <Label Name="tStartData" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"/>
+                        <Label Name="tTriggerData" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
+                        <Label Name="tStartTime" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"/>
+                        <Label Name="tTriggerTime" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
             </Grid>
         </Border>
-        <Border Grid.Row="1">
+        <Border Grid.Row="1" Grid.ColumnSpan="2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="120"/>
@@ -180,7 +186,9 @@
                             <ColumnDefinition Width="3"/>
                         </Grid.ColumnDefinitions>
                         <Border Grid.Row="0" Grid.Column="1">
-                            <ComboBox/>
+                            <ComboBox Name="FileList"  ItemsSource="{Binding Path=models.Filelist}">
+
+                            </ComboBox>
                         </Border>
                         <Border Grid.Row="1" Grid.Column="1">
                             <Grid >
@@ -190,13 +198,12 @@
                                 </Grid.RowDefinitions>
                                 <Label VerticalAlignment="Center" Grid.Row="0" Content="Analog Channels" FontSize="14" Foreground="#FFF9F9F9"/>
                                 <Border  Grid.Row="1" BorderBrush="#FF3EE1F1" BorderThickness="2" >
-                                    <Grid  Name="AnalogGrid" >
-                                        <Button  Template="{StaticResource roundbutton}"   VerticalAlignment="Top" >qwe</Button>
-                                        <Button Template="{StaticResource roundbutton}" VerticalAlignment="Top" > qwe </Button>
-                                        <ScrollBar HorizontalAlignment="Left"  Margin="0" VerticalAlignment="Top"/>
-                                        <!--UserControls:ButtonBlock HorizontalAlignment="Left" VerticalAlignment="Top" ButtonName="{Binding AnalogBlockName}"/-->
-                                    </Grid>
+                                    <Grid>
+                                        <StackPanel Name="ACGrid" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
 
+                                        </StackPanel>
+
+                                    </Grid>
                                 </Border>
                             </Grid>
                         </Border>
@@ -208,6 +215,9 @@
                                 </Grid.RowDefinitions>
                                 <Label VerticalAlignment="Center" Grid.Row="0" Content="Digital Channels" FontSize="14" Foreground="#FFF9F9F9"/>
                                 <Border Grid.Row="1" BorderBrush="#FF3EE1F1" BorderThickness="2" >
+                                    <StackPanel Name="DCGrid" Height="288" VerticalAlignment="Bottom">
+                                        
+                                    </StackPanel>
                                     <!--UserControls:ButtonBlock HorizontalAlignment="Left" VerticalAlignment="Top" ButtonName="{Binding DigitalBlockName}"/-->
                                 </Border>
                             </Grid>
@@ -217,25 +227,14 @@
 
                 </Border>
                 <Border  Grid.Column="1" >
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="243*"/>
-                            <ColumnDefinition Width="1237*"/>
-                        </Grid.ColumnDefinitions>
+                    <Grid  Name="GridPlot">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="8*"/>
+                            <RowDefinition Height="2*"/>
                         </Grid.RowDefinitions>
-                        <!--UserControls:MainChart NumberOfGridX="{Binding NumberOfGridX}"
-                                                NumberOfGridY="{Binding NumberOfGridY}"
-                                                Chart1_Enable="{Binding Chart1Enable}"
-                                                Chart2_Enable="{Binding Chart2Enable}"
-                                                Chart3_Enable="{Binding Chart3Enable}"
-                                                Chart4_Enable="{Binding Chart4Enable}"
-                                                Chart5_Enable="{Binding Chart5Enable}"
-                                                Chart_Line_Data_1="{Binding datas}" Grid.ColumnSpan="2" Margin="0,0,0,20" Grid.RowSpan="2"
-                                                
-                                                 /-->
+                        <WpfPlot  Grid.Row="0"  Name="wpfPlot1" />
+                        <WpfPlot Grid.Row="1" Name="DwpfPlot"/>
+
 
                     </Grid>
                 </Border>

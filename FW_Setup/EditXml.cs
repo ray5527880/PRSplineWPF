@@ -41,9 +41,9 @@ namespace BF_FW
         public EditXml()
         {
             strXmlFile = this.GetType().Assembly.Location;
-            strXmlFile = strXmlFile.Replace("FWAutoDownloading.exe", "PRSpline.xml");
-            strXmlFile = strXmlFile.Replace("fwsetup.dll", "PRSpline.xml");
-            strXmlFile = strXmlFile.Replace("PRSpline.exe", "PRSpline.xml");
+            strXmlFile = strXmlFile.Replace("FWAutoDownloading.exe", "PRSplineWPF.xml");
+            strXmlFile = strXmlFile.Replace("fwsetup.dll", "PRSplineWPF.xml");
+            strXmlFile = strXmlFile.Replace("PRSpline.exe", "PRSplineWPF.xml");
             strDownloadPath = strXmlFile.Replace("PRSpline.xml", @"downloadFile\");
             strVSDataPaht = strXmlFile.Replace("PRSpline.xml", @"VSData\");
             mFTPData = new List<FTPData>();

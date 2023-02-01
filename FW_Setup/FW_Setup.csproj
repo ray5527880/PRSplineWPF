@@ -15,20 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FftSharp" Version="1.1.6" />
     <PackageReference Include="GSF.COMTRADE" Version="2.4.28" />
     <PackageReference Include="GSF.Core" Version="2.4.28" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\FFTWSharp-master\FFTWSharp\FFTWSharp.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="fftwlib">
-      <HintPath>..\FFTWSharp-master\FFTWSharp\bin\Debug\fftwlib.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

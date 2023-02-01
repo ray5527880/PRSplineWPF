@@ -18,7 +18,10 @@ namespace PRSplineWPF.Scripts
         public void OpenFile(string FilePaht, string FileName,ref RalayPRData Raleydata)
         {
             //var _MainWindowData = new MainWindowData();
-
+            if (Directory.Exists("./CompressFile"))
+            {
+                Directory.Delete("./CompressFile", true);
+            }
             string strFile = FilePaht;
             string strRarPath = string.Empty;
             string strFileName = FileName;
@@ -60,6 +63,7 @@ namespace PRSplineWPF.Scripts
                 Raleydata.PrimaryData = new List<double[]>();
                 Raleydata.SecondaryData = new List<double[]>();
                 Raleydata.PerUnitData = new List<double[]>();
+                Raleydata.timeData = new List<double>();
                LoadDataFile.GetDatData(Parsers, ref Raleydata.PrimaryData, ref Raleydata.SecondaryData, ref Raleydata.PerUnitData);
 
                 List<int> _fftIndex = new List<int>();
@@ -69,6 +73,41 @@ namespace PRSplineWPF.Scripts
                         _fftIndex.Add(i);
                 }
                 FFTIndex = _fftIndex.ToArray();
+
+                GetFFTData(FFTIndex, Parsers, ref Raleydata.PrimaryData);
+                GetFFTData(FFTIndex, Parsers, ref Raleydata.SecondaryData);
+                GetFFTData(FFTIndex, Parsers, ref Raleydata.PerUnitData);
+                // var _mFFTData = new FFTData();
+                // var mfft = new FFTCal(_fftIndex.ToArray(), Parsers);
+                // try
+                // {
+                //     _mFFTData = mfft.GetFFTData(Raleydata.PrimaryData);
+                // }
+                // catch (Exception ex)
+                // {
+                //     //.Show(ex.Message);
+                // }
+
+                //for (int i = 0; i < Parsers.Schema.TotalSamples; i++)
+                // {                    
+                //     var _double = new List<double>();
+                //     int _index = 0;
+
+                //     foreach (var items in Raleydata.PrimaryData[i])
+                //     {
+                //         if (_index < Parsers.Schema.TotalChannels + 2)
+                //         {
+                //             _double.Add(items);
+                //         }
+                //         _index++;
+                //     }
+                //     foreach(var items in _mFFTData.arrFFTData[i].Value)
+                //     {
+                //         _double.Add(items);
+                //     }
+                //     Raleydata.PrimaryData[i] = _double.ToArray();
+                // }
+
                 var _analogData = new List<string>();
                 var _DigitalData = new List<string>();
                 for (int i = 0; i < Parsers.Schema.TotalAnalogChannels; i++)
@@ -92,6 +131,39 @@ namespace PRSplineWPF.Scripts
             }
             Raleydata.Parsers= Parsers;
           //  return _MainWindowData;
+        }
+        private void GetFFTData(int [] _fftIndex, Parser Parsers,ref List<double[]>doubleList)
+        {
+            var _mFFTData = new FFTData();
+            var mfft = new FFTCal(_fftIndex.ToArray(), Parsers);
+            try
+            {
+                _mFFTData = mfft.GetFFTData(doubleList);
+            }
+            catch (Exception ex)
+            {
+                //.Show(ex.Message);
+            }
+
+            for (int i = 0; i < Parsers.Schema.TotalSamples; i++)
+            {
+                var _double = new List<double>();
+                int _index = 0;
+
+                foreach (var items in doubleList[i])
+                {
+                    if (_index < Parsers.Schema.TotalChannels + 2)
+                    {
+                        _double.Add(items);
+                    }
+                    _index++;
+                }
+                foreach (var items in _mFFTData.arrFFTData[i].Value)
+                {
+                    _double.Add(items);
+                }
+                doubleList[i] = _double.ToArray();
+            }
         }
     }
     
